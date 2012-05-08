@@ -48,15 +48,17 @@ int main(void)
 {
 #define FREQ 42.0
 #define OMEGA (FREQ*M_PI*2)
-
+#define TIME 0.1
+#define NUM_SAMPLES 10000
   struct filter_rc_t f;
   int i;
   
-  init_rc_filter(&f,5000,4.7e-6,1/1000.0);
+  init_rc_filter(&f,5000,4.7e-6,1.0/NUM_SAMPLES);
 
-  for(i=0;i<=((int)(0.1/f.T));i++)
+  for(i=0;i<=((int)(TIME/f.T));i++)
     {
-      printf("%.52f\t%.52f\n",i*f.T,filter_rc(&f,sin(OMEGA*(i*f.T))));
+      printf("%.52f\t%.52f\t",i*f.T,filter_rc(&f,sin(OMEGA*(i*f.T))));
+      printf("%.52f\n",f.last_value[1]);
     }
 
   return 0;
