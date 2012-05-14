@@ -51,15 +51,36 @@ int main(void)
 #define TIME 0.1
 #define NUM_SAMPLES 10000
   struct filter_rc_t f;
-  int i;
-  
+  int c,i,a;
+  char buf[100];
+  float fl;
+
   init_rc_filter(&f,5000,4.7e-6,1.0/NUM_SAMPLES);
 
+  c=fgetc(stdin);
+  i=0;
+  a=0;
+  while(c!=EOF)
+    {
+      if(c=='\n')
+	{
+	  sscanf(buf,"%f\n",&fl);
+	  printf("%.5f\t%.5f\t%.5f\n",a*f.T,fl,filter_rc(&f,fl));
+	  a++;
+	  i=0;
+	}
+      buf[i]=(char)c;
+      c=fgetc(stdin);
+      i++;
+    }
+
+  /*
   for(i=0;i<=((int)(TIME/f.T));i++)
     {
       printf("%.52f\t%.52f\t",i*f.T,filter_rc(&f,sin(OMEGA*(i*f.T))));
       printf("%.52f\n",f.last_value[1]);
     }
+  */
 
   return 0;
 }
