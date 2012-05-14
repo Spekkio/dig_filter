@@ -4,3 +4,4 @@
 *.svg
 main
 *.data
+*.o
