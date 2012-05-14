@@ -95,13 +95,5 @@ int main(int argc, char **argv)
       i++;
     }
 
-  /*
-  for(i=0;i<=((int)(TIME/f.T));i++)
-    {
-      printf("%.52f\t%.52f\t",i*f.T,filter_rc(&f,sin(OMEGA*(i*f.T))));
-      printf("%.52f\n",f.last_value[1]);
-    }
-  */
-
   return 0;
 }
