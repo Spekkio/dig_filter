@@ -2,6 +2,6 @@
 *.plt
 *.png
 *.svg
-main
+sim
 *.data
 *.o
