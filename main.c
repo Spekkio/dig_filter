@@ -4,13 +4,9 @@
 #include <math.h>
 #include "rc_filter.h"
 #include "square.h"
+#include "main.h"
 
-#define RC_TYPE     0x00000001
-#define SQUARE_TYPE 0x00000002
-#define TIMESTAMP   0x00000100
-
-#define NUM_VALUES 0xFFFFF
-double * values;
+double * values; /*67 MByte RAM*/
 
 int main(int argc, char **argv)
 {
@@ -98,10 +94,10 @@ int main(int argc, char **argv)
 	      sscanf(buf,"%f\n",&fl);
 	      if(type & TIMESTAMP)
 		{
-		  printf("%.5f\t%.5f\n",a*f.T,filter_rc(&f,fl));
+		  printf("%.52f\t%.52f\n",a*f.T,filter_rc(&f,fl));
 		}else
 		{
-		  printf("%.5f\n",filter_rc(&f,fl));
+		  printf("%.52f\n",filter_rc(&f,fl));
 		}
 	      a++;
 	      i=0;
@@ -119,7 +115,7 @@ int main(int argc, char **argv)
 	{
 	  while(time_i <= time_limit)
 	    {
-	      printf("%.5f\t%.5f\n",time_i,square_w(ampl, freq, iter, time_i));
+	      printf("%.52f\t%.52f\n",time_i,square_w(ampl, freq, iter, time_i));
 	      time_i+=timel;
 	    }
 	}
@@ -127,7 +123,7 @@ int main(int argc, char **argv)
 	{
 	  while(time_i <= time_limit)
 	    {
-	      printf("%.5f\n",square_w(ampl, freq, iter, time_i));
+	      printf("%.52f\n",square_w(ampl, freq, iter, time_i));
 	      time_i+=timel;
 	    }
 	}

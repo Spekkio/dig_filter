@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <values.h>
+#include "main.h"
 #include "rc_filter.h"
 
 double filter_rc(struct filter_rc_t * f, const double new_sample)
@@ -10,25 +11,28 @@ double filter_rc(struct filter_rc_t * f, const double new_sample)
   ret = new_sample;
   f->last_value[f->n] = new_sample;
 
-  if(((f->last_value[0]) <= MINFLOAT) &&
-     ((f->last_value[0]) >= -MINFLOAT) &&
-     (f->n >= 1))
+  if(f->n < NUM_VALUES)
     {
-      for(i=1;i<(f->n);i++)
+      if(((f->last_value[0]) <= MINFLOAT) &&
+	 ((f->last_value[0]) >= -MINFLOAT) &&
+	 (f->n >= 1))
 	{
-	  f->last_value[i] *= f->b;
+	  for(i=1;i<(f->n);i++)
+	    {
+	      f->last_value[i] *= f->b;
+	      f->last_value[i-1] = f->last_value[i];
+	      ret+=f->last_value[i];
+	    }
 	  f->last_value[i-1] = f->last_value[i];
-	  ret+=f->last_value[i];
-	}
-      f->last_value[i-1] = f->last_value[i];
-    } else
-    {
-      for(i=0;i<(f->n);i++)
+	} else
 	{
-	  f->last_value[i] *= f->b;
-	  ret+=f->last_value[i];
+	  for(i=0;i<(f->n);i++)
+	    {
+	      f->last_value[i] *= f->b;
+	      ret+=f->last_value[i];
+	    }
+	  f->n++;
 	}
-      f->n++;
     }
 
   return ret*f->a;
