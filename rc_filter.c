@@ -1,13 +1,18 @@
 #include <stdio.h>
+#include <values.h>
 #include "rc_filter.h"
 
 double filter_rc(struct filter_rc_t * f, const double new_sample)
 {
-  double ret=new_sample;
+  double ret;
   unsigned long int i;
+
+  ret = new_sample;
   f->last_value[f->n] = new_sample;
 
-  if(f->last_value[0] == 0.0000000000000f)
+  if(((f->last_value[0]) <= MINFLOAT) &&
+     ((f->last_value[0]) >= -MINFLOAT) &&
+     (f->n >= 1))
     {
       for(i=1;i<(f->n);i++)
 	{
@@ -15,8 +20,7 @@ double filter_rc(struct filter_rc_t * f, const double new_sample)
 	  f->last_value[i-1] = f->last_value[i];
 	  ret+=f->last_value[i];
 	}
-      f->n--;
-      printf("<");
+      f->last_value[i-1] = f->last_value[i];
     } else
     {
       for(i=0;i<(f->n);i++)
@@ -24,7 +28,6 @@ double filter_rc(struct filter_rc_t * f, const double new_sample)
 	  f->last_value[i] *= f->b;
 	  ret+=f->last_value[i];
 	}
-      printf(">");
       f->n++;
     }
 
