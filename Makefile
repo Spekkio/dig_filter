@@ -10,4 +10,4 @@ square.o: square.c square.h
 	gcc -g -pedantic -O3 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math -Wall -Wextra -Werror -c square.c
 
 clean:
-	rm -rf sim *.o *~
+	rm -rf sim \#*\# *.o *~
