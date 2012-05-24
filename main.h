@@ -1,5 +1,6 @@
-#define RC_TYPE     0x00000001
-#define SQUARE_TYPE 0x00000002
+#define RC_TYPE     (1 & 0x000000FF)
+#define SQUARE_TYPE (2 & 0x000000FF)
+#define RL_TYPE     (3 & 0x000000FF)
 #define TIMESTAMP   0x00000100
 
 #define NUM_VALUES 0xFFFFFF

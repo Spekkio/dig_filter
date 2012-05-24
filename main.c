@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "rc_filter.h"
+#include "rl_filter.h"
 #include "square.h"
 #include "main.h"
 
@@ -14,12 +15,13 @@ int main(int argc, char **argv)
 #define OMEGA (FREQ*M_PI*2)
 #define TIME 0.1
 #define NUM_SAMPLES 10000
-  struct filter_rc_t f;
+  struct filter_rc_t f_rc;
+  struct filter_rl_t f_rl;
   int c,i,a;
   char buf[100];
   unsigned long int type;
   unsigned int iter;
-  float fl,r,cnd,timel,freq,ampl,time_i,time_limit;
+  float fl,r,cnd,timel,freq,ampl,time_i,time_limit,inductor;
 
   r=5000;
   cnd=4.7e-6;
@@ -27,6 +29,7 @@ int main(int argc, char **argv)
   freq=120;
   ampl=3.3;
   iter=10;
+  inductor=300e-3;
   time_limit=5;
   type=0;
   type=RC_TYPE;
@@ -55,6 +58,10 @@ int main(int argc, char **argv)
 	    {
 	      type=RC_TYPE;
 	    }
+	  else if(!strncmp(argv[i+1],"rl",2))
+	    {
+	      type=RL_TYPE;
+	    }
 	  else if(!strncmp(argv[i+1],"square",6))
 	    {
 	      type=SQUARE_TYPE;
@@ -72,6 +79,10 @@ int main(int argc, char **argv)
 	{
 	  sscanf(argv[i+1],"%f\n",&cnd);
 	}
+      else if(!strncmp(argv[i],"-ind",4))
+	{
+	  sscanf(argv[i+1],"%f\n",&inductor);
+	}
       else if(!strncmp(argv[i],"-t",2))
 	{
 	  sscanf(argv[i+1],"%f\n",&timel);
@@ -83,21 +94,49 @@ int main(int argc, char **argv)
     {
     case RC_TYPE:
       values = malloc(sizeof(double)*NUM_VALUES);
-      init_rc_filter(&f,r,cnd,timel,&values[0],NUM_VALUES);
+      init_rc_filter(&f_rc,r,cnd,timel,&values[0],NUM_VALUES);
       c=fgetc(stdin);
       i=0;
       a=0;
-      while((c!=EOF) && (a*f.T <= time_limit))
+      while((c!=EOF) && (a*f_rc.T <= time_limit))
 	{
 	  if(c=='\n')
 	    {
 	      sscanf(buf,"%f\n",&fl);
 	      if(type & TIMESTAMP)
 		{
-		  printf("%.52f\t%.52f\n",a*f.T,filter_rc(&f,fl));
+		  printf("%.52f\t%.52f\n",a*f_rc.T,filter_rc(&f_rc,fl));
 		}else
 		{
-		  printf("%.52f\n",filter_rc(&f,fl));
+		  printf("%.52f\n",filter_rc(&f_rc,fl));
+		}
+	      a++;
+	      i=0;
+	    }
+	  buf[i]=(char)c;
+	  c=fgetc(stdin);
+	  i++;
+	}
+      free(values);
+      break;
+
+    case RL_TYPE:
+      values = malloc(sizeof(double)*NUM_VALUES);
+      init_rl_filter(&f_rl,r,inductor,timel,&values[0],NUM_VALUES);
+      c=fgetc(stdin);
+      i=0;
+      a=0;
+      while((c!=EOF) && (a*f_rl.T <= time_limit))
+	{
+	  if(c=='\n')
+	    {
+	      sscanf(buf,"%f\n",&fl);
+	      if(type & TIMESTAMP)
+		{
+		  printf("%.52f\t%.52f\n",a*f_rl.T,filter_rl(&f_rl,fl));
+		}else
+		{
+		  printf("%.52f\n",filter_rl(&f_rl,fl));
 		}
 	      a++;
 	      i=0;
