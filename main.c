@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "rc_filter.h"
-#include "rl_filter.h"
+#include "fir_filter.h"
 #include "square.h"
 #include "main.h"
 
@@ -29,7 +28,7 @@ int main(int argc, char **argv)
   freq=120;
   ampl=3.3;
   iter=10;
-  inductor=300e-3;
+  inductor=0.3;
   time_limit=5;
   type=0;
   type=RC_TYPE;
@@ -98,17 +97,17 @@ int main(int argc, char **argv)
       c=fgetc(stdin);
       i=0;
       a=0;
-      while((c!=EOF) && (a*f_rc.T <= time_limit))
+      while((c!=EOF) && (a*f_rc.consts.T <= time_limit))
 	{
 	  if(c=='\n')
 	    {
 	      sscanf(buf,"%f\n",&fl);
 	      if(type & TIMESTAMP)
 		{
-		  printf("%.52f\t%.52f\n",a*f_rc.T,filter_rc(&f_rc,fl));
+		  printf("%.52f\t%.52f\n",a*f_rc.consts.T,discrete_convolution(&f_rc.consts,fl));
 		}else
 		{
-		  printf("%.52f\n",filter_rc(&f_rc,fl));
+		  printf("%.52f\n",discrete_convolution(&f_rc.consts,fl));
 		}
 	      a++;
 	      i=0;
@@ -126,17 +125,17 @@ int main(int argc, char **argv)
       c=fgetc(stdin);
       i=0;
       a=0;
-      while((c!=EOF) && (a*f_rl.T <= time_limit))
+      while((c!=EOF) && (a*f_rl.consts.T <= time_limit))
 	{
 	  if(c=='\n')
 	    {
 	      sscanf(buf,"%f\n",&fl);
 	      if(type & TIMESTAMP)
 		{
-		  printf("%.52f\t%.52f\n",a*f_rl.T,filter_rl(&f_rl,fl));
+		  printf("%.52f\t%.52f\n",a*f_rl.consts.T,discrete_convolution(&f_rl.consts,fl));
 		}else
 		{
-		  printf("%.52f\n",filter_rl(&f_rl,fl));
+		  printf("%.52f\n",discrete_convolution(&f_rl.consts,fl));
 		}
 	      a++;
 	      i=0;
