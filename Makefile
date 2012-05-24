@@ -17,3 +17,6 @@ convolution.o: convolution.c convolution.h
 
 clean:
 	rm -rf $(all_objects) \#*\# *~
+
+clean_plots:
+	rm -rf *.plt *.txt
