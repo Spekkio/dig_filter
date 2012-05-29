@@ -3,6 +3,28 @@
 #include "fft.h"
 
 /*exp (-i*2*Pi*(k/N)*n)*/
+c_vector * fftv(c_vector * r, const c_vector * x, const unsigned int N, const unsigned int k)
+{
+  unsigned int n;
+  c_vector f,ret;
+
+  ret.f[REAL] = 0;
+  ret.f[IMAG] = 0;
+
+  for(n=0;n<=(N-1);n++)
+    {
+      f.f[REAL] = 0;
+      f.f[IMAG] = -2*M_PI*((k*n)/((float)N));
+      i_expv(&f,f);
+      i_mulv(&f,x[n],f);
+      ret.v += f.v;
+    }
+
+  r->v = ret.v;
+  return r;
+}
+
+
 complex * fft(complex * r, const complex * x, const unsigned int N, const unsigned int k)
 {
   unsigned int n;

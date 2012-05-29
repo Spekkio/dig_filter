@@ -37,6 +37,15 @@ complex * i_mul(complex * r, const complex a, const complex b)
   return r;
 }
 
+c_vector * i_mulv(c_vector * r, const c_vector a, const c_vector b)
+{
+  c_vector temp;
+  temp.f[REAL] = a.f[REAL]*b.f[REAL] - a.f[IMAG]*b.f[IMAG];
+  temp.f[IMAG] = a.f[REAL]*b.f[IMAG] + a.f[IMAG]*b.f[REAL];
+  r->v = temp.v;
+  return r;
+}
+
 /*
 complex * i_div(complex * r, const complex a, const complex b)
 {
@@ -55,6 +64,15 @@ complex * i_exp(complex * r, const complex a)
   return r;
 }
 
+c_vector * i_expv(c_vector * r, const c_vector a)
+{
+  c_vector temp;
+  temp.f[REAL] = exp(a.f[REAL]) * cos(a.f[IMAG]);
+  temp.f[IMAG] = exp(a.f[REAL]) * sin(a.f[IMAG]);
+  r->v = temp.v;
+  return r;
+}
+
 complex * i_sqrt(complex * r, const complex a)
 {
   complex temp;
@@ -65,7 +83,22 @@ complex * i_sqrt(complex * r, const complex a)
   return r;
 }
 
+c_vector * i_sqrtv(c_vector * r, const c_vector a)
+{
+  c_vector temp;
+  temp.f[REAL] = sqrt((a.f[REAL] + sqrt(a.f[REAL]*a.f[REAL] + a.f[REAL]*a.f[IMAG]))/2);
+  temp.f[IMAG] = sqrt((-a.f[REAL]+sqrt(a.f[REAL]*a.f[REAL] + a.f[IMAG]*a.f[IMAG]))/2);
+  r->v = temp.v;
+  return r;
+}
+
 float i_abs(const complex a)
 {
   return sqrt(a.real*a.real + a.imag*a.imag);
+}
+
+
+float i_absv(const c_vector a)
+{
+  return sqrt(a.f[REAL]*a.f[REAL] + a.f[IMAG]*a.f[IMAG]);
 }

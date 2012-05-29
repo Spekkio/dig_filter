@@ -1,3 +1,6 @@
+#define REAL 0
+#define IMAG 1
+
 typedef float v2sf __attribute__ ((vector_size(2*sizeof(float))));
 
 typedef struct complex
@@ -16,7 +19,11 @@ c_vector * i_addv(c_vector * r, const c_vector a, const c_vector b);
 complex * i_sub(complex * r, const complex a, const complex b);
 c_vector * i_subv(c_vector * r, const c_vector a, const c_vector b);
 complex * i_mul(complex * r, const complex a, const complex b);
+c_vector * i_mulv(c_vector * r, const c_vector a, const c_vector b);
 complex * i_div(complex * r, const complex a, const complex b);
 complex * i_exp(complex * r, const complex a);
+c_vector * i_expv(c_vector * r, const c_vector a);
 complex * i_sqrt(complex * r, const complex a);
+c_vector * i_sqrtv(c_vector * r, const c_vector a);
 float i_abs(const complex a);
+float i_absv(const c_vector a);
