@@ -5,6 +5,6 @@
 *.png
 *.svg
 sim
-fft
+fft/fft
 *.data
 *.o
