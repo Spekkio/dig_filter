@@ -1,7 +1,7 @@
 standard = -std=c99
 debug = -g
-optimize_ = -O3 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math 
-optimize = 
+optimize = -O3 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math 
+optimize_ls = 
 options = -pedantic $(standard) $(debug) -Wall -Wextra -Werror 
 libs = -lm -lsndfile
 
