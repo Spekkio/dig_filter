@@ -1,12 +1,20 @@
+standard = -std=c99
+debug = -g
+optimize_ = -O3 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math 
+optimize = 
+options = -pedantic $(standard) $(debug) -Wall -Wextra -Werror 
+libs = -lm -lsndfile
+
 objects = fft.o
+
 
 target: fft $(objects)
 
 fft: main.c $(objects)
-	gcc -pedantic -std=c99 -O9 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math -g -Wall -Wextra -Werror -o fft main.c $(objects) -lm
+	gcc $(optimize) $(options) -o fft main.c $(objects) $(libs)
 
 fft.o: fft.c fft.h
-	gcc -pedantic -std=c99 -O9 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math -g -Wall -Wextra -Werror -c fft.c
+	gcc $(optimize) $(options) -c fft.c
 
 clean:
 	rm -rf fft *.o *~

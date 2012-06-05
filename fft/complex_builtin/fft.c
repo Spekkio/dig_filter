@@ -11,7 +11,7 @@ float complex * fft(float complex * r, const float complex * x, const unsigned l
 
   for(n=0;n<=(N-1);n++)
     {
-      ret+=(cexp(0 - _Complex_I*(2*M_PI)*((k*n)/((float)N))) * x[n]);
+      ret+=(cexp(0.0 - _Complex_I*(2*M_PI)*((k*n)/((float)N))) * x[n]);
     }
   *r=ret;
   return r;
@@ -26,10 +26,10 @@ float complex * ifft(float complex * r, const float complex * x, const unsigned 
 
   for(n=0;n<=(N-1);n++)
     {
-      ret+=x[n]*cexp(0+_Complex_I*(2*M_PI)*((k*n)/((float)N)));
+      ret+=x[n]*cexp(0.0 + _Complex_I*(2*M_PI)*((k*n)/((float)N)));
     }
 
-  *r = (1.0/N)*ret;
+  *r = (1.0/N)*(creal(ret) + _Complex_I*cimag(ret));
   return r;
 }
 
