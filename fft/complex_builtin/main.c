@@ -48,7 +48,7 @@ int main()
     {
       fft(&r[a],x,SAMPLES,a);
       
-      printf("%f\t%.52f\n",((float)a)/SECONDS,cabs(r[a])*(2.0/SAMPLES));
+      printf("%.6e\t%.6e\n",((float)a)/SECONDS,cabs(r[a])*(2.0/SAMPLES));
       
       if((cabs(r[a])*(2.0/SAMPLES))<0.35)
 	{
