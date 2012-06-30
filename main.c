@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 #define TIME 0.1
 #define NUM_SAMPLES 10000
   struct filter_rc_t f_rc;
-  struct filter_rl_t f_rl;
+  struct filter_rl_t f_lr;
   int c,i,a;
   char buf[100];
   unsigned long int type;
@@ -57,9 +57,9 @@ int main(int argc, char **argv)
 	    {
 	      type=RC_TYPE;
 	    }
-	  else if(!strncmp(argv[i+1],"rl",2))
+	  else if(!strncmp(argv[i+1],"lr",2))
 	    {
-	      type=RL_TYPE;
+	      type=LR_TYPE;
 	    }
 	  else if(!strncmp(argv[i+1],"square",6))
 	    {
@@ -119,23 +119,23 @@ int main(int argc, char **argv)
       free(values);
       break;
 
-    case RL_TYPE:
+    case LR_TYPE:
       values = malloc(sizeof(double)*NUM_VALUES);
-      init_rl_filter(&f_rl,r,inductor,timel,&values[0],NUM_VALUES);
+      init_lr_filter(&f_lr,r,inductor,timel,&values[0],NUM_VALUES);
       c=fgetc(stdin);
       i=0;
       a=0;
-      while((c!=EOF) && (a*f_rl.consts.T <= time_limit))
+      while((c!=EOF) && (a*f_lr.consts.T <= time_limit))
 	{
 	  if(c=='\n')
 	    {
 	      sscanf(buf,"%f\n",&fl);
 	      if(type & TIMESTAMP)
 		{
-		  printf("%.52f\t%.52f\n",a*f_rl.consts.T,discrete_convolution(&f_rl.consts,fl));
+		  printf("%.52f\t%.52f\n",a*f_lr.consts.T,discrete_convolution(&f_lr.consts,fl));
 		}else
 		{
-		  printf("%.52f\n",discrete_convolution(&f_rl.consts,fl));
+		  printf("%.52f\n",discrete_convolution(&f_lr.consts,fl));
 		}
 	      a++;
 	      i=0;

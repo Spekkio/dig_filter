@@ -2,6 +2,12 @@
 #include "main.h"
 #include "convolution.h"
 
+/*Integral[f(t-T)g(T),T->{0,t}]*/
+double convolution_integral(void)
+{
+  return 0.0;
+}
+
 /*ret = A * Sum[B^n * new_sample]*/
 double discrete_convolution(struct const_t * f, const double new_sample)
 {

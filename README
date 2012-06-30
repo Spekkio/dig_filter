@@ -1,0 +1,32 @@
+This is a simulator for a RC circuit, you can generate a square wave with ringing edges also.
+
+To generate a square wav./sim -type square -timestamp -t 0.00001 -limit 0.1 -freq 100e with ringing edges
+
+./sim -type square -timestamp -t 0.00001 -limit 0.1 -freq 100
+
+-type square
+tell the simulator to make a square wave
+
+-timestamp
+tell the simulator to print out the timestamps, used for plotting
+
+-t 0.00001
+tell the simulator to have the timestep of 0.00001 seconds
+
+-limit 0.1
+stop simulating at 0.1 seconds
+
+-freq
+the square wave will have the frequency 100 Hz
+
+
+We can use a pipe to transfer a square wave to a RC filter
+
+./sim -type square -t 0.00001 -limit 0.5 -freq 100 | ./sim -type rc -timestamp -r 10000 -c 0.000047 > test.txt
+
+remove -timestamp from the -type square side, and put it in the last pipe. otherwise we get errors.
+Now we can store the information in test.txt and plot it with gnuplot
+
+gnuplot
+> plot 'test.txt' with lines
+

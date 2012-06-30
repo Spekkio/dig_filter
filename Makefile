@@ -1,4 +1,4 @@
-objects := fir_filter.o square.o convolution.o
+objects := fir_filter.o square.o convolution.o functions_of_time.o
 all_objects := sim $(objects)
 
 target: $(all_objects)
@@ -15,8 +15,11 @@ square.o: square.c square.h
 convolution.o: convolution.c convolution.h
 	gcc -g -pedantic -O3 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math -Wall -Wextra -Werror -c convolution.c
 
+functions_of_time.o: functions_of_time.c functions_of_time.h
+	gcc -g -pedantic -O3 -msse3 -msse4.1 -msse4.2 -mfpmath=both -ffast-math -Wall -Wextra -Werror -c functions_of_time.c
+
 clean:
-	rm -rf $(all_objects) \#*\# *~
+	rm -rf sim *.o \#*\# *~
 
 clean_plots:
 	rm -rf *.plt *.txt
