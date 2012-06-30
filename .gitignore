@@ -10,3 +10,4 @@ fft/complex_builtin/fft
 *.data
 *.o
 *.wav
+fft/complex_builtin/tmp/
