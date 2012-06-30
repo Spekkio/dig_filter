@@ -46,12 +46,12 @@ int main()
   /*X[k] = Sum[x[n]*exp(-I*2*Pi*(k*n)/N),{n,0,N-1}]*/
   /*fft(&result, input array x, number of array items N, Index k of result X[k])*/  
   
-  for(a=0;a<=(SAMPLES);a++)
+  for(a=0;a<=(SAMPLES/2.0);a++)
     {
       fftv(&r[a],x,SAMPLES,a);
-      /*
-      printf("%f\t%.52f\n",a/SECONDS,i_absv(r[a])*(2.0/SAMPLES));
-      */
+      
+      printf("%f\t%.6f\n",((float)a)/SECONDS,i_absv(r[a])*(2.0/SAMPLES));
+      
       if((i_absv(r[a])*(2.0/SAMPLES))<0.35)
 	{
 	  r[a] = z;
@@ -61,7 +61,7 @@ int main()
   for(a=0;a<=(SAMPLES);a++)
     {
       ifftv(&x[a],r,SAMPLES,a);
-      printf("%f\t%.52f\n",a*S_TIME,x[a].f[REAL]);
+      /*printf("%f\t%.52f\n",a*S_TIME,x[a].f[REAL]);*/
     }
 
   return 0;
