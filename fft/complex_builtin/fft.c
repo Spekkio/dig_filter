@@ -29,7 +29,7 @@ float complex * ifft(float complex * r, const float complex * x, const unsigned 
       ret+=x[n]*cexp(0.0 + _Complex_I*(2*M_PI)*((k*n)/((float)N)));
     }
 
-  *r = (1.0/N)*(creal(ret) + _Complex_I*cimag(ret));
+  *r = (1.0/N)*ret;
   return r;
 }
 
